@@ -9,6 +9,44 @@ router.get('/', asyncHandler(async (req,res)=>{
     res.json(allTask);
 }));
 
+//CREATE TASK
+router.post('/', asyncHandler(async (req,res)=>{
+    const {
+        title,
+        completed,
+        description,
+        dueDate,
+        priority,
+        status,
+        takenBy,
+    } = req.body;
+
+    const task= await Task.create({
+        title,
+        completed,
+        description,
+        dueDate,
+        priority,
+        status,
+        takenBy,
+    })
+
+    if(task){
+        res.status(201).json({
+            _id :task._id,
+           title: task.title,
+           completed :task.completed,
+           description: task.description,
+           dueDate: task.dueDate,
+           priority:task.priority,
+           status:task.status,
+           takenBy: task.takenBy 
+        })
+    }else {
+        res.status(404).json({message:'Task input Invalid'});
+        }
+}));
+
 
 // to delete task
 router.delete('/:id', asyncHandler(async (req,res)=>{
